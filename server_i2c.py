@@ -15,7 +15,7 @@ def writeNumber(value):
     # bus.write_byte_data(address, 0, value)
     return -1
 
-@app.route('/set-state/<int:port>-<int:state>')
+@app.route('/set-state/<int:port>/<int:state>')
 def setState(port, state):
     if port < 2 | port > 13:
         return "Invalid Port: ", port
