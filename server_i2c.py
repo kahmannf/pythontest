@@ -20,8 +20,8 @@ def writeNumber(value):
 @app.route('/set-state/')
 def setState():
 
-    port = request.args.get('port', '')
-    state = request.args.get('state', '')
+    port = int(request.args.get('port', ''))
+    state = int(request.args.get('state', ''))
 
     if port < 2 or port > 13:
         return "Invalid Port: ", port
