@@ -32,7 +32,7 @@ def setState():
     writeNumber(port)
     writeNumber(state)
 
-    result = "Switched port ", port, ("on" if (state == 1) else "off")
+    result = "Switched port %s %s" % (port, ("on" if (state == 1) else "off"))
 
     return result
 
