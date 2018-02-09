@@ -23,10 +23,10 @@ def setState():
     port = request.args.get('port', '')
     state = request.args.get('state', '')
 
-    if port < 2 | port > 13:
+    if port < 2 or port > 13:
         return "Invalid Port: ", port
 
-    if state != 0 & state != 1:
+    if state != 0 and state != 1:
         return "Invalid state: ", state
 
     writeNumber(port)
