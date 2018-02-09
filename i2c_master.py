@@ -16,16 +16,24 @@ def readNumber():
     # number = bus.read_byte_data(address, 1)
     return number
 
+#while True:
+    #var = input("Enter 1 - 9: ")
+    #if not var:
+    #    continue
+
+    #writeNumber(var)
+    #print "RPI: Hi Arduino, I sent you ", var
+    ## sleep one second
+    #time.sleep(1)
+
+    #number = readNumber()
+    #print "Arduino: Hey RPI, I received a digit ", number
+    #print
+
 while True:
-    var = input("Enter 1 - 9: ")
-    if not var:
-        continue
+    var = input("enter 2 - 13")
 
+    if var < 2 | var > 13:
+        print var, " is not inside the range 2-13"
+    
     writeNumber(var)
-    print "RPI: Hi Arduino, I sent you ", var
-    # sleep one second
-    time.sleep(1)
-
-    number = readNumber()
-    print "Arduino: Hey RPI, I received a digit ", number
-    print
