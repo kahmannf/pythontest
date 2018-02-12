@@ -6,7 +6,7 @@ app = Flask(__name__)
 def get_test():
     return render_template('test.html')
 
-@app.route('/send_data/', methods=['POST'])
+@app.route('/post_data/', methods=['POST'])
 def post_data():
     return redirect(url_for('success.html'))
 
