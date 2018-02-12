@@ -10,6 +10,7 @@ def get_test():
 
 @app.route('/post_data/', methods=['POST'])
 def post_data():
+    global counter
     counter = int(counter) + 1
     return redirect(url_for('test'))
 
