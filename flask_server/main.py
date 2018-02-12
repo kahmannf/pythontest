@@ -5,7 +5,7 @@ app = Flask(__name__)
 counter = 0
 
 @app.route('/test/')
-def get_test():
+def test():
     return render_template('test.html')
 
 @app.route('/post_data/', methods=['POST'])
