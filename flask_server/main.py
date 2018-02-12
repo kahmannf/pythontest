@@ -8,7 +8,7 @@ counter = 0
 def test():
     global counter
     print "current number is %s" % counter
-    return render_template('test.html')
+    return render_template('test.html', counter=counter)
 
 @app.route('/post_data/', methods=['POST'])
 def post_data():
