@@ -1,3 +1,5 @@
+import json
+
 class Data:
 
     application_name = ''

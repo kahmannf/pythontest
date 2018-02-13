@@ -1,11 +1,13 @@
+import json, os, inspect
+
 def get_config():
-    return (
-{
-    'app_name': 'Cocktail Mixer',
-    'flask_host_name' : '0.0.0.0',
-    'flask_port' : 5001,
-    'beverages_dir' : 'beverage_dir',
-    'supply_dir' : 'supply_dir',
-    'recipes_dir': 'recipe_dir',
-    'glass_size' : 300,
-})
+
+    server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+    config_file_name = os.path.join(server_dir,'server_config.json')
+
+    config_file = open(config_file_name, 'rU')
+
+    server_config = json.load(config_file)
+
+    return server_config
