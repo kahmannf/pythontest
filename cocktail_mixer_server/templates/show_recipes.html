@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
-  <ul>
+  
   {% for recipe in data.recipes %}
-    <li><h2>{{ recipe.get('name') }}</h2>
+    <div class="row recipe">
+        <div class="column-1"></div>
+        <div class="column column-6"><span>{{ recipe.get('name') }}</span></div>
+    </div>
   {% else %}
-    <li><em>No recipes found!</em>
+    <div class="row column column-12">No recipes found!</div>
   {% endfor %}
-  </ul>
+  
 {% endblock %}

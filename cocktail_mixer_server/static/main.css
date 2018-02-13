@@ -1,3 +1,18 @@
+.recipe {
+
+}
+
+.recipe span {
+    color: rgb(102, 102, 102);
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.view-title {
+    color: rgb(60, 60, 60);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 6em
+}
+
 .main {
     width: 80%;
     margin: 0 10%;
@@ -6,6 +21,50 @@
     height: 100%;
     border: 1px solid #DDD;
     box-shadow: 5px 5px 0px rgba(0,0,0, .2);
+}
+
+.column {
+    float: left;
+}
+  
+.row {
+    width: 80%;
+    background-color: rgba(255, 255, 255, 1);
+    margin: 0 auto;
+    padding: 10px 0;
+}
+  
+.row:after, .row:before {
+    content: " ";
+    display: table;
+}
+  
+.row:after {
+    clear: both;
+}
+  
+.column-12 {
+    width: 100%;
+}
+  
+.column-6 {
+    width: 50%;
+}
+  
+.column-4 {
+    width: 33.3%;
+}
+  
+.column-3 {
+    width: 25%;
+}
+  
+.column-2 {
+    width: 16.67%;
+}
+  
+.column-1 {
+    width: 8.33%;
 }
 
 body {

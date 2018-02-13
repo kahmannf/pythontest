@@ -11,7 +11,19 @@ server_config = get_config()
 @app.route('/', methods=['GET'])
 def show_recipes():
     data = Data(server_config=server_config)
-    
+
+    data.view_name = 'Menu'
+
+    return render_template('show_recipes.html', data=data)
+
+@app.route('/filtered/', methods=['GET'])
+def show_recipes_filtered():
+    data = Data(server_config=server_config)
+
+    data.view_name = 'Menu'
+
+    data.filter_recipes()
+
     return render_template('show_recipes.html', data=data)
 
 
