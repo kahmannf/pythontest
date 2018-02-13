@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <ul>
+  {% for recipe in data.recipes %}
+    <li><h2>{{ recipe.get('name') }}</h2>
+  {% else %}
+    <li><em>No recipes found!</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
