@@ -7,4 +7,5 @@
 	"maintenance_pin" : "1111",
 	"recipes_dir" : "relative/path/to/recipes",
 	"supply_dir" : "relative/path/to/supplies",
+	"secret_key" : "your super secret key"
 }

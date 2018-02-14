@@ -1,0 +1,41 @@
+{% extends "maintenance.html" %}
+{% block content%}
+
+<div class="row">
+    <div class="column column-1">&nbsp;</div>
+    <div class="column column-1">
+        <h4>Slot-ID</h4>
+    </div>
+    <div class="column column-1">
+        <h4>Beverage</h4>
+    </div>
+    <div class="column column-1">
+        <h4>Amount</h4>
+    </div>
+    <div>
+        <h4>Set Content</h4>
+    </div>
+</div>
+
+{% for supply in data.supply %}
+<div class="row">
+    <div class="column column-1">&nbsp;</div>
+    <div class="column column-1">
+        {{supply['slot']}}
+        &nbsp;
+    </div>
+    <div class="column column-1">
+        {{supply['beverage']}}
+        &nbsp;
+    </div>
+    <div class="column column-1">
+        {{supply['amount']}}
+        &nbsp;
+    </div>
+    <div>
+        <a class="link-button" href="{{'%s?slot=%s' % (url_for('set_slot'), supply['slot'])}}">set content</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

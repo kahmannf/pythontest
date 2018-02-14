@@ -1,5 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<div class="row">
+    <div class="column column-1">&nbsp;</div>
+    <div class="column column-1">
+        {% if session.get('logged_in', False) %}
+            <a class="link-button" href="{{url_for('maintenance')}}">Supply</a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+    </div>
+    <div class="column column-9">
+        &nbsp;</div>
+    <form class="column column-1" action="{{url_for('maintenance')}}" method='POST'>
+        <input class="link-button" type="submit" value="log off">
+    </form>
+</div>
+
+{% block content %}{% endblock %}
 
 {% endblock %}
