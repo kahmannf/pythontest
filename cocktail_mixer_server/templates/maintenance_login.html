@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if error %}<div class="row column column-12 error"> {{ error }} </div>{% endif %}
+
+<form class="row" action"{{ url_for('login') }}" method="POST">
+	<div class="column column-4">
+	</div>
+	<div class="column column-1">
+		Pin:
+	</div>
+	<div class="column column-3">
+		<input type="password" name="pin">
+	</div>
+	<div class="column column-1">
+		<input type="submit" value="log in">
+	</div>
+</form>
+
+{% endblock %}
