@@ -1,0 +1,9 @@
+{
+	"app_name": "Cocktail Mixer App Name",
+	"beverages_dir" : "relative/path/to/beverages",
+	"glass_size" : 300
+	"flask_host_name": "0.0.0.0",
+	"flask_port" : 5001,
+	"recipes_dir" : "relative/path/to/recipes",
+	"supply_dir" : "relative/path/to/supplies",
+}
