@@ -3,11 +3,14 @@
   
   {% for recipe in data.recipes %}
     <div class="row recipe">
-        <div class="column-1">&nbsp;</div>
-        <div class="column column-6"><span>{{ recipe.get('name') }}</span></div>
+        <div class="column column-1">&nbsp;</div>
+        <div class="column column-6">{{ recipe.get('name') }}</div>
     </div>
   {% else %}
-    <div class="row column column-12">No recipes found!</div>
+    <div class="row">
+      <div class="column column-1">&nbsp;</div>
+      <div class="column column-6">No recipes available!</div>
+    </div>
   {% endfor %}
   
 {% endblock %}

@@ -1,4 +1,4 @@
-import json
+import json, os, inspect
 
 class Data:
 
@@ -15,9 +15,9 @@ class Data:
     def __init__(self, server_config):
         self.server_config = server_config
         self.application_name = server_config['app_name'] 
-        self.beverages = load_beverages(server_config['beverages_dir'])
-        self.supply = load_supply(server_config['supply_dir'])
-        self.recipes = load_recipes(server_config['recipes_dir'])
+        self.beverages = sorted(load_from_file(server_config['beverages_dir']), key= lambda bev : bev.get('name'))
+        self.supply = sorted(load_from_file(server_config['supply_dir']), key= lambda sup : sup.get('slot'))
+        self.recipes = sorted(load_from_file(server_config['recipes_dir']), key= lambda rec : rec.get('name'))
         
     def get_supply_item(self, name):
         for supply_item in self.supply:
@@ -33,7 +33,7 @@ class Data:
             total_parts += int(ingredient['amount'])
         
         for ingredient in recipe['ingredients']:
-            supply_item = self.get_supply_item(ingredient['name'])
+            supply_item = self.get_supply_item(name=ingredient['beverage'])
             if supply_item:
                 required_amount = float(totalML) * float(ingredient['amount']) / float(total_parts) 
                 if required_amount > int(supply_item['amount']):
@@ -50,33 +50,30 @@ class Data:
                 available_recipes.append(recipe)
         self.recipes = available_recipes
 
-def load_recipes(dir):
-        recipe_list = []
-        recipe_list.append({
-            'name' : 'Havana Cola',
-            'ingredients' : [{
-                    'name' : 'Havana',
-                    'amount' : 1
-                }, {
-                    'name' : 'Cola',
-                    'amount' : 4
-                }
+def get_file_names(directory):
+    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
-            ]
-        })
-        recipe_list.append({
-            'name' : 'Gin Tonic',
-            'ingredients' : [{
-                    'name' : 'Gin',
-                    'amount' : 1
-                }, {
-                    'name' : 'Tonic Water',
-                    'amount' : 4
-                }
-            ]
-        })
+def load_from_file(dir):
+    result_list = []
+    
+    server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    source_dir = os.path.join(server_dir, dir)
+    
+    if not os.path.isdir(source_dir):
+        return result_list
+    
+    files = get_file_names(source_dir)
 
-        return recipe_list
+    for filename in files:
+        full_filename = os.path.join(source_dir, filename)
+
+        file_stream = open(full_filename, 'rU')
+
+        dictionary = json.load(file_stream)
+
+        result_list.append(dictionary)
+    
+    return result_list
 
 def load_beverages(beverages_dir):
     beverage_list = []
@@ -113,3 +110,4 @@ def load_supply(supply_dir):
         'amount' : 1000
     })
     return supply_list
+

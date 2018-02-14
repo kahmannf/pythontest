@@ -28,7 +28,7 @@ def show_recipes():
 def show_recipes_filtered():
     data = Data(server_config=server_config)
 
-    data.view_name = 'Menu'
+    data.view_name = 'Available recipes'
 
     data.filter_recipes()
 
@@ -70,6 +70,8 @@ def maintenance():
 @app.route('/set_slot/', methods=['GET'])
 def set_slot():
     data = Data(server_config=server_config)
+
+    data.view_name = 'Set slot data'
 
     slot = int(request.args.get('slot', -1))
 
