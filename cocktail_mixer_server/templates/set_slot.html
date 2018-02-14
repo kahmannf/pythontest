@@ -1,4 +1,40 @@
 {% extends "maintenance.html" %}
 {% block content %}
-No content yet! Selected Slot: {{slot}}
+<form action="{{url_for('set_slot')}}" method="POST">
+    <div class="row">
+        <div class="column column-1">&nbsp;</div>
+        <div class="column column-1">Slot:</div>
+        <div class="column column-3">
+            <input type="number" name="slot" value="{{slot}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column column-1">&nbsp;</div>
+        <div class="column column-1">Amount:</div>
+        <div class="column column-3">
+            <input type="number" name="amount" value="1000">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column column-1">&nbsp;</div>
+        <div class="column column-1">Slot:</div>
+        <div class="column column-3">
+            <input type="text" name="beverage" list="beverages">
+            <datalist id="beverages">
+                {% for beverage in data.beverages %}
+                    <option value="{{beverage['name']}}" >
+                {% endfor %}
+            </datalist>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column column-2">&nbsp;</div>
+        <div class="column column-3">
+            <input class="link-button" type="submit" value="Set">
+        </div>
+    </div>
+    
+    
+    
+</form>
 {% endblock %}

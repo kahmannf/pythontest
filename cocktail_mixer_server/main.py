@@ -67,8 +67,17 @@ def maintenance():
     	    return render_template('maintenance_login.html', data=data)
 
 
-@app.route('/set_slot/', methods=['GET'])
+@app.route('/set_slot/', methods=['GET','POST'])
 def set_slot():
+    if request.method == 'POST':
+        slot = request.form.get('slot', -1)
+        beverage = request.form.get('beverage', None)
+        amount = request.form.get('amount', 0)
+
+        print(slot, beverage, amount)
+
+        return redirect(url_for('maintenance'))
+
     data = Data(server_config=server_config)
 
     data.view_name = 'Set slot data'
