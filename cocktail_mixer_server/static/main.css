@@ -3,6 +3,43 @@
     font-color: rgb(150, 24, 24);
 }
 
+.link-button {
+	color: black;
+	text-decoration: none;
+}
+
+.link-button:link, .link-button:visited {
+    background-color: rgb(175, 175, 175);
+    color: black;
+    border: 2px solid rgb(160, 159, 159) ;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.link-button:hover {
+	border-style: outset;
+    background-color: rgb(175, 175, 175);
+    color: white;
+}
+
+.link-button:active {
+	border-style: inset;
+    background-color: rgb(175, 175, 175);
+    color: white;
+}
+
+.main {
+    width: 80%;
+    margin: 0 10%;
+    background-color: white;
+    position: absolute;
+    height: 100%;
+    border: 1px solid #DDD;
+    box-shadow: 5px 5px 0px rgba(0,0,0, .2);
+}
+
 .recipe {
 
 }
@@ -16,16 +53,6 @@
     color: rgb(60, 60, 60);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 6em
-}
-
-.main {
-    width: 80%;
-    margin: 0 10%;
-    background-color: white;
-    position: absolute;
-    height: 100%;
-    border: 1px solid #DDD;
-    box-shadow: 5px 5px 0px rgba(0,0,0, .2);
 }
 
 .column {
