@@ -21,8 +21,14 @@ class Data:
         
     def get_supply_item(self, name):
         for supply_item in self.supply:
-            if supply_item['beverage'] == name:
+            if supply_item['beverage'].lower() == name.lower():
                 return supply_item
+        return None
+
+    def get_beverage(self, name):
+        for beverage in self.beverages:
+            if beverage['name'].lower() == name.lower():
+                return beverage
         return None
 
     def can_mix(self, recipe):
@@ -50,6 +56,38 @@ class Data:
                 available_recipes.append(recipe)
         self.recipes = available_recipes
 
+    def set_supply_item(self, supply_item):
+        for sup in self.supply:
+            if sup['slot'] == supply_item['slot']:
+                self.supply[self.supply.index(sup)] = supply_item
+
+        if not supply_item in self.supply:
+            self.supply.append(supply_item)
+        
+        server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+        supply_dir = os.path.join(server_dir, self.server_config['supply_dir'])
+
+        filename = os.path.join(supply_dir, 'slot%s.json' % str(supply_item['slot']))
+
+        save_to_file(filename, supply_item)
+
+    def update_or_create_beverage(self, beverage):
+        original_beverage = self.get_beverage(name=beverage.get('name'))
+
+        if original_beverage:
+            self.beverages[self.beverages.index(original_beverage)] = beverage
+        else:
+            self.beverages.append(beverage)
+        
+        server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+        supply_dir = os.path.join(server_dir, self.server_config['beverages_dir'])
+
+        filename = os.path.join(supply_dir, '%s.json' % beverage['name'].replace(' ', '').lower())
+
+        save_to_file(filename, beverage)
+
 def get_file_names(directory):
     return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
@@ -67,47 +105,16 @@ def load_from_file(dir):
     for filename in files:
         full_filename = os.path.join(source_dir, filename)
 
-        file_stream = open(full_filename, 'rU')
+        with open(full_filename, 'rU') as file_stream:
+            dictionary = json.load(file_stream)
 
-        dictionary = json.load(file_stream)
-
-        result_list.append(dictionary)
+            result_list.append(dictionary)
     
     return result_list
 
-def load_beverages(beverages_dir):
-    beverage_list = []
-    beverage_list.append({
-        'name' : 'Gin'
-    })
-    beverage_list.append({
-        'name' : 'Cola'
-    })
-    beverage_list.append({
-        'name' : 'Tonic Water'
-    })
-    beverage_list.append({
-        'name' : 'Havana'
-    })
-
-    return beverage_list
-
-def load_supply(supply_dir):
-    supply_list = []
-    supply_list.append({
-        'slot' : 2,
-        'beverage' : 'Gin',
-        'amount' : 1000
-    })
-    supply_list.append({
-        'slot' : 3,
-        'beverage' : 'Tonic Water',
-        'amount' : 1000
-    })
-    supply_list.append({
-        'slot' : 4,
-        'beverage' : 'Cola',
-        'amount' : 1000
-    })
-    return supply_list
+def save_to_file(filename, dict_obj):
+    if os.path.isfile(filename):
+        os.remove(filename)
+    with open(filename, 'w') as file_stream:
+        json.dump(dict_obj, file_stream, indent=4)
 

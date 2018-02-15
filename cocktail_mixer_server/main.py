@@ -69,16 +69,41 @@ def maintenance():
 
 @app.route('/set_slot/', methods=['GET','POST'])
 def set_slot():
-    if request.method == 'POST':
-        slot = request.form.get('slot', -1)
-        beverage = request.form.get('beverage', None)
-        amount = request.form.get('amount', 0)
+    data = Data(server_config=server_config)
 
-        print(slot, beverage, amount)
-
+    if not session.get('logged_in', False):
         return redirect(url_for('maintenance'))
 
-    data = Data(server_config=server_config)
+    if request.method == 'POST':
+        slot =int(request.form.get('slot', -1))
+        beverage_name = request.form.get('beverage', None)
+        amount = int(request.form.get('amount', 0))
+
+        error_messages = []
+
+        if slot < 0:
+            error_messages.append('Invalid slot number: %s' % slot)
+        
+        if amount < 0:
+            error_messages.append('Invalid amount: %s' % amount)
+        
+        beverage = data.get_beverage(beverage_name)
+
+        if not beverage:
+            error_messages.append('Unknown beverage: %s' % beverage_name)
+
+        if len(error_messages) > 0:
+            for message in error_messages:
+                flash(message)
+        else:
+            supply_item = {
+                'slot': slot,
+                'beverage': beverage['name'],
+                'amount': amount
+            }
+            data.set_supply_item(supply_item)
+
+        return redirect(url_for('maintenance'))
 
     data.view_name = 'Set slot data'
 
@@ -90,8 +115,75 @@ def set_slot():
         return render_template('set_slot.html', data=data, slot=str(slot))
 
 
-def main():
+@app.route('/maintenance/beverages/', methods=['GET'])
+def ma_beverages():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
 
+    data = Data(server_config=server_config)
+    return render_template('ma_beverages.html', data=data)
+
+@app.route('/edit_beverage/', methods=['GET', 'POST'])
+def edit_beverage():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
+
+    data = Data(server_config=server_config)
+
+    if request.method == 'POST':
+        name = request.form.get('name', '')
+        viscosity = int(request.form.get('viscosity', -1))
+        alcohol_vol = int(request.form.get('alcohol_vol', -1))
+
+        error_messages = []
+
+        if not name:
+            error_messages.append('Name cannot be empty')
+        
+        if viscosity < 0:
+            error_messages.append('Invalid value for viscosity')
+
+        if alcohol_vol < 0:
+            error_messages.append('Invalid value for Alcohol Vol. Percentage')
+
+        if len(error_messages) > 0:
+            for message in error_messages:
+                flash(message)
+        else:
+            data.update_or_create_beverage({
+                'name': name,
+                'viscosity': viscosity,
+                'alcohol_vol': alcohol_vol
+            })
+
+
+        return redirect(url_for('ma_beverages'))
+
+        
+
+    beverage_name = request.args.get('name', '')
+    
+    beverage = data.get_beverage(beverage_name)
+
+    if not beverage_name or not beverage:
+        flash('Unknown beverage: %s' % beverage_name)
+        return redirect(url_for('ma_beverages'))
+    else:
+        return render_template('edit_beverage.html', data=data, beverage=beverage)
+
+@app.route('/new_beverage/', methods=['GET', 'POST'])
+def new_beverage():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
+
+    if request.method == 'POST':
+        pass
+
+    data = Data(server_config=server_config)
+
+    return render_template('edit_beverage.html', data=data, beverage={})
+
+def main():
 
     app.run(host=server_config['flask_host_name'],port=server_config['flask_port'])
 

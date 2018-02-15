@@ -1,3 +1,5 @@
 {
-    "name" : "Orangensaft"
+    "name": "Orangensaft",
+    "viscosity": 1,
+    "alcohol_vol": 1
 }

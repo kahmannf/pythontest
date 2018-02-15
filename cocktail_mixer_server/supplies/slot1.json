@@ -1,5 +1,5 @@
 {
-    "slot" : 1,
-    "beverage" : "",
-    "amount" : 0
+    "slot": 1,
+    "beverage": "Vodka",
+    "amount": 1000
 }

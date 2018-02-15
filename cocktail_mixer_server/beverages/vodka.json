@@ -1,3 +1,5 @@
 {
-    "name" : "Vodka"
+    "name" : "Vodka",
+    "viscosity" : 1,
+    "alcohol_vol" : 40
 }
