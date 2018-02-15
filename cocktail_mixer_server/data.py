@@ -72,18 +72,20 @@ class Data:
 
         save_to_file(filename, supply_item)
 
-    def update_or_create_beverage(self, beverage):
-        original_beverage = self.get_beverage(name=beverage.get('name'))
+    def update_or_create_beverage(self, beverage, old_name):
+        original_beverage = self.get_beverage(name=old_name)
 
-        if original_beverage:
-            self.beverages[self.beverages.index(original_beverage)] = beverage
-        else:
-            self.beverages.append(beverage)
-        
         server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
         supply_dir = os.path.join(server_dir, self.server_config['beverages_dir'])
 
+        if original_beverage:
+            self.beverages[self.beverages.index(original_beverage)] = beverage
+            old_filename = os.path.join(supply_dir, '%s.json' % old_name.replace(' ', '').lower())
+            os.remove(old_filename)
+        else:
+            self.beverages.append(beverage)
+        
         filename = os.path.join(supply_dir, '%s.json' % beverage['name'].replace(' ', '').lower())
 
         save_to_file(filename, beverage)

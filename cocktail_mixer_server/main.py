@@ -134,6 +134,7 @@ def edit_beverage():
         name = request.form.get('name', '')
         viscosity = int(request.form.get('viscosity', -1))
         alcohol_vol = int(request.form.get('alcohol_vol', -1))
+        old_name = request.form.get('old_name', '')
 
         error_messages = []
 
@@ -154,7 +155,7 @@ def edit_beverage():
                 'name': name,
                 'viscosity': viscosity,
                 'alcohol_vol': alcohol_vol
-            })
+            }, old_name=old_name)
 
 
         return redirect(url_for('ma_beverages'))
@@ -169,17 +170,17 @@ def edit_beverage():
         flash('Unknown beverage: %s' % beverage_name)
         return redirect(url_for('ma_beverages'))
     else:
-        return render_template('edit_beverage.html', data=data, beverage=beverage)
+        data.view_name = 'Edit beverage: %s' % beverage['name']
+        return render_template('edit_beverage.html', data=data, beverage=beverage, old_name=beverage_name)
 
-@app.route('/new_beverage/', methods=['GET', 'POST'])
+@app.route('/new_beverage/', methods=['GET'])
 def new_beverage():
     if not session.get('logged_in', False):
         return redirect(url_for('maintenance'))
 
-    if request.method == 'POST':
-        pass
-
     data = Data(server_config=server_config)
+
+    data.view_name = 'Create new Beverage'
 
     return render_template('edit_beverage.html', data=data, beverage={})
 
