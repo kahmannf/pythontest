@@ -1,6 +1,6 @@
 {% extends "maintenance.html" %}
 {% block content %}
-<form action="{{url_for('set_slot')}}" method="POST">
+<form action="{{url_for('set_slot')}}" method="POST" id="form_slot">
     <div class="row">
         <div class="column column-1">&nbsp;</div>
         <div class="column column-1">Slot:</div>
@@ -19,12 +19,11 @@
         <div class="column column-1">&nbsp;</div>
         <div class="column column-1">Slot:</div>
         <div class="column column-3">
-            <input type="text" name="beverage" list="beverages">
-            <datalist id="beverages">
+            <select id="beverages" form="form_slot" name="beverage">
                 {% for beverage in data.beverages %}
-                    <option value="{{beverage['name']}}" >
+                    <option value="{{beverage['name']}}" >{{beverage['name']}}</option>
                 {% endfor %}
-            </datalist>
+            </select>
         </div>
     </div>
     <div class="row">
