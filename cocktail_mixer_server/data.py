@@ -31,6 +31,12 @@ class Data:
                 return beverage
         return None
 
+    def get_recipe(self, name):
+        for recipe in self.recipes:
+            if recipe['name'].lower() == name.lower():
+                return recipe
+        return None
+
     def can_mix(self, recipe):
         totalML = int(self.server_config['glass_size'])
         
@@ -89,6 +95,24 @@ class Data:
         filename = os.path.join(supply_dir, '%s.json' % beverage['name'].replace(' ', '').lower())
 
         save_to_file(filename, beverage)
+
+    def update_or_create_recipe(self, recipe, old_name):
+        original_recipe = self.get_recipe(name=old_name)
+
+        server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+        recipes_dir = os.path.join(server_dir, self.server_config['recipes_dir'])
+
+        if original_recipe:
+            self.recipes[self.recipes.index(original_recipe)] = recipe
+            old_filename = os.path.join(recipes_dir, '%s.json' % old_name.replace(' ', '').lower())
+            os.remove(old_filename)
+        else:
+            self.beverages.append(recipe)
+        
+        filename = os.path.join(recipes_dir, '%s.json' % recipe['name'].replace(' ', '').lower())
+
+        save_to_file(filename, recipe)
 
 def get_file_names(directory):
     return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]

@@ -1,0 +1,41 @@
+{% extends "maintenance.html" %}
+{% block content %}
+<form action="{{url_for('edit_recipe')}}" method="POST">
+    {% if old_name %}
+        <input class="ninja" type="text" name="old_name" value="{{old_name}}">
+    {% endif %}
+        <div class="row">
+            <div class="column column-1">&nbsp;</div>
+            <div class="column column-1">Name:</div>
+            <div class="column column-3">
+                <input type="text" name="name" value="{{recipe.get('name', '')}}">
+            </div>
+        </div>
+        <input class="ninja" type="number" name="total_ingredients" value="{{len(recipe.ingredients)}}">
+        {% for ingredient in recipe['ingredients']%}
+            <div class="row">
+                <div class="column column-1">&nbsp;</div>
+                <div class="column column-2">
+                    <input type="text" name="beverage{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['beverage']}}" list="beverages">
+                    <datalist id="beverages">
+                        {% for beverage in data.beverages %}
+                            <option value="{{beverage['name']}}" >
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="column column-1">
+                    <input type="number" name="amount{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['amount']}}">
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row">
+            <div class="column column-2">&nbsp;</div>
+            <div class="column column-3">
+                <input class="link-button" type="submit" value="Save">
+            </div>
+        </div>
+        
+        
+        
+    </form>
+{% endblock %}

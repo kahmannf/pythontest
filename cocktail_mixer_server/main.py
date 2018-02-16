@@ -121,6 +121,9 @@ def ma_beverages():
         return redirect(url_for('maintenance'))
 
     data = Data(server_config=server_config)
+
+    data.view_name = 'Beverages'
+
     return render_template('ma_beverages.html', data=data)
 
 @app.route('/edit_beverage/', methods=['GET', 'POST'])
@@ -138,6 +141,8 @@ def edit_beverage():
 
         error_messages = []
 
+        check_name_beverage = data.get_beverage(old_name)
+
         if not name:
             error_messages.append('Name cannot be empty')
         
@@ -146,6 +151,9 @@ def edit_beverage():
 
         if alcohol_vol < 0:
             error_messages.append('Invalid value for Alcohol Vol. Percentage')
+
+        if old_name and old_name != name and check_name_beverage:
+            error_messages.append('A beverage with the name "%s" already exists' % name)
 
         if len(error_messages) > 0:
             for message in error_messages:
@@ -159,8 +167,6 @@ def edit_beverage():
 
 
         return redirect(url_for('ma_beverages'))
-
-        
 
     beverage_name = request.args.get('name', '')
     
@@ -183,6 +189,104 @@ def new_beverage():
     data.view_name = 'Create new Beverage'
 
     return render_template('edit_beverage.html', data=data, beverage={})
+
+@app.route('/ma_recipes/', methods=['GET'])
+def ma_recipes():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
+    
+    data = Data(server_config=server_config)
+
+    data.view_name = 'Recipes'
+
+    return render_template('ma_recipes.html', data=data)
+
+@app.route('/new_recipe/', methods=['GET'])
+def new_recipe():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
+    pass
+
+@app.route('/edit_recipe/', methods=['GET', 'POST'])
+def edit_recipe():
+    if not session.get('logged_in', False):
+        return redirect(url_for('maintenance'))
+    
+    data = Data(server_config=server_config)
+
+    if request.method == 'POST':
+        old_name = request.form.get('old_name', None)
+        name = request.form.get('name', None)
+
+        total_ingredients = int(request.form.get('total_ingredients', 0))
+
+        if total_ingredients < 1:
+            flash('A recipe has to have at least one ingredient')
+            return redirect(url_for('ma_recipes'))
+        
+        current_ingredient_index = 0
+        parsed_ingredients = []
+
+        error_messages = []
+
+        while len(parsed_ingredients) < total_ingredients and current_ingredient_index < 100: ## we just assume that nobody is crazy enogh to create a cocktail with more that 100 igredients. would not fit into the glass anyways
+            beverage_input = 'beverage%s' % current_ingredient_index
+            amount_input = 'amount%s' % current_ingredient_index
+            
+            beverage_name = request.form.get(beverage_input, None)
+            if not beverage_name:
+                continue
+
+            beverage = data.get_beverage(beverage_name)
+
+            if not beverage:
+                error_messages.append('Unknown beverage: %s' % beverage_name)
+                break
+
+            amount = int(request.form.get(amount_input, 0))
+
+            if amount < 1:
+                error_messages.append('Amount for %s is invalid' % beverage['name'])
+                break
+
+            parsed_ingredients.append({
+                'beverage' : beverage['name'],
+                'amount' : amount
+            })
+
+            current_ingredient_index += 1
+
+        if len(parsed_ingredients) < total_ingredients:
+            error_messages.append('Failed toparse ingredients')
+        
+        check_name_recipe = data.get_recipe(name)
+
+        if old_name and old_name != name and check_name_recipe:
+            error_messages.append('A recipe with the name "%s" already exists' % name)
+
+        if len(error_messages) > 0:
+            for message in error_messages:
+                flash(message)
+        else:
+            data.update_or_create_recipe({
+                'name': name,
+                'ingredients' : parsed_ingredients
+            }, old_name=old_name)
+
+
+        return redirect(url_for('ma_recipes'))
+        
+
+    recipe_name = request.args.get('name', '')
+    
+    recipe = data.get_recipe(recipe_name)
+
+    if not recipe_name or not recipe:
+        flash('Unknown recipe: %s' % recipe_name)
+        return redirect(url_for('ma_recipes'))
+    else:
+        data.view_name = 'Edit recipe: %s' % recipe['name']
+        return render_template('edit_recipe.html', data=data, recipe=recipe, old_name=recipe_name, len=len)
 
 def main():
 

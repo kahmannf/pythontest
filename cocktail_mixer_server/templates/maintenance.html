@@ -11,13 +11,20 @@
         {% endif %}
     </div>
     <div class="column column-1">
-            {% if session.get('logged_in', False) %}
-                <a class="link-button" href="{{url_for('ma_beverages')}}">Beverages</a>
-            {% else %}
-                &nbsp;
-            {% endif %}
-        </div>
-    <div class="column column-7">
+        {% if session.get('logged_in', False) %}
+            <a class="link-button" href="{{url_for('ma_beverages')}}">Beverages</a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+    </div>
+    <div class="column column-1">
+        {% if session.get('logged_in', False) %}
+            <a class="link-button" href="{{url_for('ma_recipes')}}">Beverages</a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+    </div>
+    <div class="column column-6">
         &nbsp;</div>
     <div class="column column-1">
         <form action="{{url_for('maintenance')}}" method='POST'>
