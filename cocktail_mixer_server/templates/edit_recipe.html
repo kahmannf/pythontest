@@ -26,11 +26,11 @@
                     <input type="number" name="amount{{recipe.ingredients.index(ingredient)}}" id="amount{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['amount']}}">
                 </div>
                 <div class="column column-1">
-                    <button type="button" class="link-button" id="remove_button{{recipe.ingredients.index(ingredient)}}" onclick="remove_recipe_row({{recipe.ingredients.index(ingredient)}})">Remove</button>
+                    <button type="button" class="link-button" id="remove_button{{recipe.ingredients.index(ingredient)}}" onclick="remove_recipe_row(this)">Remove</button>
                 </div>
             </div>
         {% endfor %}
-        <div class="row">
+        <div class="row" id="submit-row">
             <div class="column column-2">&nbsp;</div>
             <div class="column column-3">
                 <input class="link-button" type="submit" value="Save">

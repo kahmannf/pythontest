@@ -205,7 +205,19 @@ def ma_recipes():
 def new_recipe():
     if not session.get('logged_in', False):
         return redirect(url_for('maintenance'))
-    pass
+    
+    data = Data(server_config=server_config)
+
+    recipe_dummy = {
+        'name' : '',
+        'ingredients' : [ {
+            'beverage' : data.beverages[0]['name'],
+            'amount' : 0
+        }]
+    }
+
+    data.view_name = 'Create new recipe'
+    return render_template('edit_recipe.html', data=data, recipe=recipe_dummy, len=len)
 
 @app.route('/edit_recipe/', methods=['GET', 'POST'])
 def edit_recipe():

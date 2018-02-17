@@ -97,7 +97,10 @@ class Data:
         save_to_file(filename, beverage)
 
     def update_or_create_recipe(self, recipe, old_name):
-        original_recipe = self.get_recipe(name=old_name)
+        
+        original_recipe = None
+        if old_name:
+            original_recipe = self.get_recipe(name=old_name)
 
         server_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
