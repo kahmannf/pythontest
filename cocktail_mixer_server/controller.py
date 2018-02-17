@@ -1,6 +1,5 @@
 import smbus
 import time
-import asyncio
 # for RPI version 1, use "bus = smbus.SMBus(0)"
 bus = smbus.SMBus(1)
 
@@ -18,14 +17,8 @@ class Controller:
     status = 1
 
     def start_mixing(self, data, recipe):
-        loop = asyncio.get_event_loop()
-        
-        tasks = [asyncio.ensure_future(self.mix(data, recipe))]
+        pass
 
-        loop.run_until_complete(asyncio.wait(tasks))
-        loop.close()
-
-    @asyncio.coroutine
     def mix(self, data, recipe):
         if not self.status == 1:
             return
