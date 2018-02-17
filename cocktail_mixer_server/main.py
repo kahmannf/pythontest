@@ -1,10 +1,13 @@
 from flask import Flask, request, render_template, url_for, session, redirect, flash
 from server_config import get_config
 from data import Data
+from controller import Controller
 
 app = Flask(__name__)
 
 server_config = get_config()
+
+controller = Controller()
 
 app.config.from_object(__name__) # load config from this file , flaskr.py
 
@@ -299,6 +302,38 @@ def edit_recipe():
     else:
         data.view_name = 'Edit recipe: %s' % recipe['name']
         return render_template('edit_recipe.html', data=data, recipe=recipe, old_name=recipe_name, len=len)
+
+@app.route('/mix_recipe/', methods=['POST', 'GET'])
+def mix_recipe():
+    error_messages = []
+
+    recipe_name = request.args.get('recipe', None)
+
+    if not recipe_name:
+        return redirect(url_for('show_recipes'))
+
+    data = Data(server_config=server_config)
+
+    recipe = data.get_recipe(recipe_name)
+
+    if not recipe:
+        error_messages.append('Unknown recipe: %s' % recipe_name)
+    
+    global controller
+
+    if controller.status == 0:
+        error_messages.append('Already mixing recipe')
+
+    if not data.can_mix(recipe):
+        error_messages.append('Insufficient supplies for %s' % recipe['name'])
+
+    if len(error_messages) > 0:
+        for message in error_messages:
+            flash(message)
+    else:
+        controller.start_mixing(data, recipe)
+
+    return redirect(url_for('show_recipes'))
 
 def main():
 
