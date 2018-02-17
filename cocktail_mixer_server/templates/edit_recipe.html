@@ -1,6 +1,6 @@
 {% extends "maintenance.html" %}
 {% block content %}
-<form action="{{url_for('edit_recipe')}}" method="POST">
+<form action="{{url_for('edit_recipe')}}" id="form_recipe" method="POST">
     {% if old_name %}
         <input class="ninja" type="text" name="old_name" value="{{old_name}}">
     {% endif %}
@@ -11,20 +11,22 @@
                 <input type="text" name="name" value="{{recipe.get('name', '')}}">
             </div>
         </div>
-        <input class="ninja" type="number" name="total_ingredients" value="{{len(recipe.ingredients)}}">
+        <input class="ninja" type="number" id="total_ingredients" name="total_ingredients" value="{{len(recipe.ingredients)}}">
         {% for ingredient in recipe['ingredients']%}
-            <div class="row">
+            <div class="row" id="ingredient{{recipe.ingredients.index(ingredient)}}">
                 <div class="column column-1">&nbsp;</div>
                 <div class="column column-2">
-                    <input type="text" name="beverage{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['beverage']}}" list="beverages">
-                    <datalist id="beverages">
+                    <select id="beverages{{recipe.ingredients.index(ingredient)}}" form="form_recipe" name="beverage{{recipe.ingredients.index(ingredient)}}">
                         {% for beverage in data.beverages %}
-                            <option value="{{beverage['name']}}" >
+                            <option value="{{beverage['name']}}" {% if ingredient['beverage'] == beverage['name'] %} selected="selected" {% endif %} >{{beverage['name']}}</option>
                         {% endfor %}
-                    </datalist>
+                    </select>
                 </div>
                 <div class="column column-1">
-                    <input type="number" name="amount{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['amount']}}">
+                    <input type="number" name="amount{{recipe.ingredients.index(ingredient)}}" id="amount{{recipe.ingredients.index(ingredient)}}" value="{{ingredient['amount']}}">
+                </div>
+                <div class="column column-1">
+                    <button type="button" class="link-button" id="remove_button{{recipe.ingredients.index(ingredient)}}" onclick="remove_recipe_row({{recipe.ingredients.index(ingredient)}})">Remove</button>
                 </div>
             </div>
         {% endfor %}
