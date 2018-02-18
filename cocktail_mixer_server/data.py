@@ -117,6 +117,11 @@ class Data:
 
         save_to_file(filename, recipe)
 
+    def remove_amount(self, beverage_name, amount_ml):
+        supply_item = self.get_supply_item(beverage_name)
+        supply_item['amount'] -= amount_ml
+        self.set_supply_item(supply_item)
+
 def get_file_names(directory):
     return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 

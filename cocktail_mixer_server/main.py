@@ -331,7 +331,7 @@ def mix_recipe():
         for message in error_messages:
             flash(message)
     else:
-        controller.start_mixing(data, recipe)
+        controller.start_mixing(data, recipe, server_config=server_config)
 
     return redirect(url_for('show_recipes'))
 
