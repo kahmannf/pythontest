@@ -1,8 +1,8 @@
-import smbus2
+import smbus
 import time
 from data import Data
 # for RPI version 1, use "bus = smbus.SMBus(0)"
-bus = smbus2.SMBus(1)
+bus = smbus.SMBus(1)
 
 # This is the address we setup in the Arduino Program
 address = 0x04
