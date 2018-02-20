@@ -1,13 +1,17 @@
 from flask import Flask, request, render_template, url_for, session, redirect, flash
 from server_config import get_config
 from data import Data
-from controller import Controller
+from sys import argv
 
 app = Flask(__name__)
 
 server_config = get_config()
 
-controller = Controller()
+controller = None
+
+if not len(argv) > 1 and not argv[1] == 'no_controller':
+    from controller import Controller
+    controller = Controller()
 
 app.config.from_object(__name__) # load config from this file , flaskr.py
 

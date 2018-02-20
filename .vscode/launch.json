@@ -14,6 +14,7 @@
             "cwd": "${workspaceFolder}",
             "env": {},
             "envFile": "${workspaceFolder}/.env",
+            "args" : [ "no_controller" ],
             "debugOptions": [
                 "RedirectOutput"
             ]
