@@ -12,6 +12,9 @@ controller = None
 if not len(argv) > 1 or not argv[1] == 'no_controller':
     from controller import Controller
     controller = Controller()
+    print('Controller enabled')
+else:
+    print('Controller disabled')
 
 app.config.from_object(__name__) # load config from this file , flaskr.py
 
