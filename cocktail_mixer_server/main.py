@@ -9,7 +9,7 @@ server_config = get_config()
 
 controller = None
 
-if not len(argv) > 1 and not argv[1] == 'no_controller':
+if not len(argv) > 1 or not argv[1] == 'no_controller':
     from controller import Controller
     controller = Controller()
 
