@@ -68,7 +68,7 @@ class Controller:
                 if air_ml > 0:
                     time.sleep(air_ml * 2 / 1000)
 
-                ##this calculation was aquired bytesting. it is totally not accurate at all but the best i was able to come up with
+                ##this calculation was aquired by testing. it is totally not accurate at all but the best i was able to come up with
                 remaining_time = (beverage['viscosity'] (amount_in_ml - ((19/100) * air_ml) * 2)) / 10
                 time.sleep(remaining_time)
 
